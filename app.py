@@ -55,7 +55,7 @@ def insert_after(par: Paragraph, text='') -> Paragraph:
 # --- Funções de geração de documentos ---
 
 def gerar_agenda_template(entries, df_bank, professor, semana, bimestre, cores_turmas):
-    wb = load_workbook("templates/agenda_modelo.xlsx")
+    wb = load_workbook("agenda_modelo.xlsx")
     ws = wb.active
     ws["B1"] = professor
     ws["E1"] = semana
@@ -85,8 +85,7 @@ def gerar_agenda_template(entries, df_bank, professor, semana, bimestre, cores_t
     return out
 
 def gerar_plano_template(entries, df_bank, professor, semana, bimestre, turma,
-                         metodologias, recursos, criterios,
-                         modelo="templates/modelo_plano.docx"):
+                         metodologias, recursos, criterios, modelo="modelo_plano.docx"):
     doc = Document(modelo)
     header_disciplinas = ", ".join(sorted({e['disciplina'] for e in entries}))
     total_aulas = str(len(entries))
@@ -149,7 +148,7 @@ def gerar_plano_template(entries, df_bank, professor, semana, bimestre, turma,
 
 def gerar_guia_template(professor, turma, disciplina, bimestre, inicio, fim,
                         qtd_bimestre, qtd_semanal, metodologias, criterios,
-                        df_bank, modelo="templates/modelo_guia.docx"):
+                        df_bank, modelo="modelo_guia.docx"):
     doc = Document(modelo)
     reps = {
         'ppp': professor,
@@ -172,19 +171,20 @@ def gerar_guia_template(professor, turma, disciplina, bimestre, inicio, fim,
                 for p in cell.paragraphs:
                     for k,v in reps.items():
                         if k in p.text: p.text = p.text.replace(k,v)
+    # habilidades e objetos únicos
     mask = (
-        (df_bank["DISCIPLINA"]==disciplina) &
-        (df_bank["ANO/SÉRIE"]==extrai_serie(turma)) &
+        (df_bank["DISCIPLINA"]==disciplina)&
+        (df_bank["ANO/SÉRIE"]==extrai_serie(turma))&
         (df_bank["BIMESTRE"]==bimestre)
     )
     habs = df_bank.loc[mask, "HABILIDADE"].dropna().astype(str).tolist()
     objs = df_bank.loc[mask, "OBJETO DE CONHECIMENTO"].dropna().astype(str).tolist()
-    unique_habs = []
-    unique_objs = []
+    unique_habs, unique_objs = [], []
     for h in habs:
         if h not in unique_habs: unique_habs.append(h)
     for o in objs:
         if o not in unique_objs: unique_objs.append(o)
+    # substitui hhh e ooo
     for p in doc.paragraphs:
         if 'hhh' in p.text: p.text = "\n".join(unique_habs)
         if 'ooo' in p.text: p.text = "\n".join(unique_objs)
@@ -198,9 +198,9 @@ def gerar_guia_template(professor, turma, disciplina, bimestre, inicio, fim,
     return out
 
 def gerar_planejamento_template(professor, disciplina, turma, bimestre,
-                                grupos, df_bank,
-                                modelo="templates/modelo_planejamento.docx"):
+                                grupos, df_bank, modelo="modelo_planejamento.docx"):
     doc = Document(modelo)
+    # cabeçalho
     hdr = {'ppp':professor,'ddd':disciplina,'ttt':turma,'bbb':bimestre}
     for p in doc.paragraphs:
         for k,v in hdr.items():
@@ -211,6 +211,7 @@ def gerar_planejamento_template(professor, disciplina, turma, bimestre,
                 for p in cell.paragraphs:
                     for k,v in hdr.items():
                         if k in p.text: p.text = p.text.replace(k,v)
+    # corpo por grupo
     for grp in grupos:
         p0 = doc.add_paragraph(); set_border(p0)
         doc.add_paragraph()
@@ -220,9 +221,9 @@ def gerar_planejamento_template(professor, disciplina, turma, bimestre,
         doc.add_paragraph("Aulas do material digital:")
         for n in grp['nums']:
             mask = (
-                (df_bank["DISCIPLINA"]==disciplina) &
-                (df_bank["ANO/SÉRIE"]==extrai_serie(turma)) &
-                (df_bank["BIMESTRE"]==bimestre) &
+                (df_bank["DISCIPLINA"]==disciplina)&
+                (df_bank["ANO/SÉRIE"]==extrai_serie(turma))&
+                (df_bank["BIMESTRE"]==bimestre)&
                 (df_bank["Nº da aula"]==n)
             )
             titles = df_bank.loc[mask,"TÍTULO DA AULA"].dropna().astype(str).tolist()
@@ -250,11 +251,12 @@ def gerar_planejamento_template(professor, disciplina, turma, bimestre,
 
 if "extras" not in st.session_state:
     extras = carregar_json("extras.json") or {}
-    extras.setdefault("metodologia", [])
-    extras.setdefault("recursos", [])
-    extras.setdefault("criterios", [])
+    extras.setdefault("metodologia",[])
+    extras.setdefault("recursos",[])
+    extras.setdefault("criterios",[])
     st.session_state.extras = extras
 
+# Sessão de dados
 if "pagina" not in st.session_state:
     st.session_state.pagina = "Cadastro de Professor"
 if "professores" not in st.session_state:
@@ -277,6 +279,7 @@ for p in pages:
     st.sidebar.markdown("\n")
 
 # --- Páginas ---
+
 # 1. Cadastro de Professor
 if st.session_state.pagina == "Cadastro de Professor":
     st.header("Cadastro de Professor")
@@ -287,7 +290,7 @@ if st.session_state.pagina == "Cadastro de Professor":
          "Português","Inglês","Matemática","PV","Redação","Tecnologia","OE Port","OE Mat"]
     )
     if st.button("Salvar Professor"):
-        st.session_state.professores.append({"nome": nome, "disciplinas": disciplinas})
+        st.session_state.professores.append({"nome":nome,"disciplinas":disciplinas})
         salvar_json("professores.json", st.session_state.professores)
         st.success("Professor salvo!")
     for p in st.session_state.professores:
@@ -299,16 +302,12 @@ elif st.session_state.pagina == "Cadastro de Turmas":
     saved = st.session_state.turmas
     default_s = sorted({t[:-1] for t in saved.keys()})
     default_seg = []
-    if any(s in ["6º","7º","8º","9º"] for s in default_s):
-        default_seg.append("Ensino Fundamental")
-    if any(s in ["1º","2º","3º"] for s in default_s):
-        default_seg.append("Ensino Médio")
+    if any(s in ["6º","7º","8º","9º"] for s in default_s): default_seg.append("Ensino Fundamental")
+    if any(s in ["1º","2º","3º"] for s in default_s): default_seg.append("Ensino Médio")
     segmento = st.multiselect("Segmento(s)", ["Ensino Fundamental","Ensino Médio"], default=default_seg)
     anos = []
-    if "Ensino Fundamental" in segmento:
-        anos += ["6º","7º","8º","9º"]
-    if "Ensino Médio" in segmento:
-        anos += ["1º","2º","3º"]
+    if "Ensino Fundamental" in segmento: anos+=["6º","7º","8º","9º"]
+    if "Ensino Médio" in segmento: anos+=["1º","2º","3º"]
     series = st.multiselect("Ano/Série", anos, default=default_s)
     turma_map = {
         "6º":["6ºA","6ºB","6ºC","6ºD"],"7º":["7ºA","7ºB","7ºC"],
@@ -368,7 +367,7 @@ elif st.session_state.pagina == "Gerar Agenda e Plano":
     if not st.session_state.horarios:
         st.warning("Cadastre horários primeiro.")
     else:
-        df_bank = pd.read_excel("templates/ES_banco.xlsx", header=0)
+        df_bank = pd.read_excel("ES_banco.xlsx", header=0)
         prof = st.selectbox("Professor(a)", [p["nome"] for p in st.session_state.professores])
         bim = st.selectbox("Bimestre", ["1º","2º","3º","4º"])
         meses_lista = meses
@@ -446,7 +445,7 @@ elif st.session_state.pagina == "Gerar Guia":
     if not st.session_state.horarios:
         st.warning("Cadastre horários primeiro.")
     else:
-        df_bank = pd.read_excel("templates/ES_banco.xlsx", header=0)
+        df_bank = pd.read_excel("ES_banco.xlsx", header=0)
         prof = st.selectbox("Professor(a)", [p["nome"] for p in st.session_state.professores])
         bim = st.selectbox("Bimestre", ["1º","2º","3º","4º"])
         inicio = st.date_input("Início"); fim = st.date_input("Fim")
@@ -471,7 +470,7 @@ elif st.session_state.pagina == "Gerar Planejamento Bimestral":
     if not st.session_state.horarios:
         st.warning("Cadastre horários primeiro.")
     else:
-        df_bank = pd.read_excel("templates/ES_banco.xlsx", header=0)
+        df_bank = pd.read_excel("ES_banco.xlsx", header=0)
         prof = st.selectbox("Professor(a)", [p["nome"] for p in st.session_state.professores])
         bim = st.selectbox("Bimestre", ["1º","2º","3º","4º"])
         turmas = sorted({h["turma"] for h in st.session_state.horarios})
