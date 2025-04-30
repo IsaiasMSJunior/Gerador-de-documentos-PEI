@@ -11,6 +11,23 @@ from datetime import datetime
 from io import BytesIO
 from openpyxl import load_workbook
 from openpyxl.styles import PatternFill
+from pyairtable import Table
+
+@st.cache_resource
+def get_airtable_table(table_name: str):
+    """
+    Retorna um objeto Table do pyairtable conectado à tabela table_name
+    """
+    api_key = st.secrets["airtable_api_key"]
+    base_id = st.secrets["airtable_base_id"]
+    return Table(api_key, base_id, table_name)
+
+# inicializa cada tabela
+tb_professores = get_airtable_table("professores")
+tb_turmas      = get_airtable_table("turmas")
+tb_horarios    = get_airtable_table("horarios")
+tb_extras      = get_airtable_table("extras")
+
 
 st.set_page_config(page_title="Agenda Escolar", layout="wide")
 
