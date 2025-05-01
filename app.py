@@ -1,4 +1,5 @@
 import streamlit as st
+st.set_page_config(page_title="Agenda Escolar", layout="wide")
 st.write(">>> st.secrets:", st.secrets)
 import pandas as pd
 import calendar
@@ -16,7 +17,7 @@ from openpyxl.styles import PatternFill
 # Airtable client
 from pyairtable import Table
 
-st.set_page_config(page_title="Agenda Escolar", layout="wide")
+
 
 # --- Airtable setup ---
 
