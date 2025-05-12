@@ -5,14 +5,20 @@ import firebase_admin
 from firebase_admin import credentials, db
 import json
 
-# === Inicialização do Firebase ===
+# === Carrega credenciais do Firebase ===
 with open('firebase_key.json', 'r') as f:
     service_account_info = json.load(f)
 
-cred = credentials.Certificate(service_account_info)
-firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://gerador-de-documentos-pei-default-rtdb.firebaseio.com/'  # <--- substitua pela URL do seu Realtime Database
-})
+# === Inicializa o Firebase só na primeira vez ===
+try:
+    # Tenta obter o app padrão; se não existir, gera ValueError
+    firebase_admin.get_app()
+except ValueError:
+    cred = credentials.Certificate(service_account_info)
+    firebase_admin.initialize_app(cred, {
+        'databaseURL': 'https://SEU_DATABASE.firebaseio.com'  # <-- ajuste para a sua URL
+    })
+
 root = db.reference()
 
 # === Estado da sessão ===
@@ -27,12 +33,11 @@ def login():
     username = st.text_input("Usuário", key="login_user")
     password = st.text_input("Senha", type="password", key="login_pass")
     if st.button("Entrar"):
-        user_ref = root.child('users').child(username)
-        user = user_ref.get()
+        user = root.child('users').child(username).get()
         if user and user.get('password') == password:
             st.success(f"Bem-vindo(a), {username}!")
-            st.session_state['logged_in'] = True
-            st.session_state['username'] = username
+            st.session_state.logged_in = True
+            st.session_state.username = username
             st.rerun()
         else:
             st.error("Usuário ou senha incorretos.")
@@ -54,8 +59,8 @@ def signup():
             st.warning("Preencha usuário e senha.")
 
 def logout():
-    st.session_state['logged_in'] = False
-    st.session_state['username'] = ''
+    st.session_state.logged_in = False
+    st.session_state.username = ''
     st.rerun()
 
 # === Funções CRUD ===
@@ -117,14 +122,14 @@ def main_app():
     elif choice == "Logout":
         logout()
 
-# === Fluxo principal ===
+# === Fluxo Principal ===
 st.title("🔒 App CRUD com Login")
-if not st.session_state['logged_in']:
+if not st.session_state.logged_in:
     modo = st.sidebar.selectbox("Escolha", ["Login", "Cadastrar"])
     if modo == "Login":
         login()
     else:
         signup()
 else:
-    st.sidebar.write(f"👤 {st.session_state['username']}")
+    st.sidebar.write(f"👤 {st.session_state.username}")
     main_app()
