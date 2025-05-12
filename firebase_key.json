@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "gerador-de-documentos-pei",
+  "private_key_id": "828aa53f8815622c59582b3b9da01986e28f5764",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC1g+dtQAi6qvKi\nu0vs13qecK68Bl1rs/puRL8OSNXqDtgG9Cd8YINWbuU44XDGSxK+SwnoKL71oV2G\ntZ8sULsUZ7K4GD1u8wQoJ2JXWaho+BU6Iu2bywl+Qi4LsbIyZA3fbyFLSo1diZMy\njEXD69pgYQdCRqCtrR/p2Lppbqi/XfrhyHFbmuVu2Hk0r0CGrG+y5DDYuHsLW6ec\n5txqFakb+wd0gb5YF3GEq45Z662rG6x0pgMKhr3O9GMngPuxIqwLgZt4bnA5bBJy\npOmztpLV6Io8KuJqfDmvLhpUDq/wWMSZLlUek4rxQnMpc5ypoTyvmLXUqz/yko+S\nnJaKG2IXAgMBAAECggEAUsc6QeT7diGisJro57RnC52I2l+uuADmmuYIGVwXDfxC\nAX3UChE7pC3DpHqPQycWf6jZ9kGqwHscG2R1mDCi+I3H/9OyJIh4I1W+r+ZH+sL0\nb0RhhvSDukw1EokxonBlsTlNfjgcGwW0Fs/Iuy4ys1RcipmKClpTHQKFFLLuCwLr\nkjkpUAn7aS1nkCUmDgkGzgK70eeMITNYRQkhigHs5ng3EK6g++S7rHrHXSEiDwJb\npUT1ZanT1I6Wy354OIeG3No6t0v6jGBkmWRKDKWOstahTtM4/QO6k5hk4d2BQjBt\nff5FIXQJLUudODde62H6y0kBucVGwDA0Xsbb+X48nQKBgQDxqHi4Orl9MNB3SSRE\nxwZVCfH6/zjyJ1s52DDSsvDX4MItdbcHKYT+I+3bN7Gs6GODyHMQjp9skD4OhrD+\ncleJvdKXPzuaKkga8/DZ77WfXkL0adwtrBALTgplkiVRXzF2/2HztfV6HLdvrs3t\ndy2Sdpsw7omigwP+NxnsIVI0dQKBgQDASa2R+4uiF46NNPA/K4aX3GGgfzPKRdy5\nVF8phaPcZJ0Xvpit1SE2/nCjP/YpuCrduU2iv0TaJ/ruvLMF+B4o7PLsPoU1CdWu\n2mkM1SAJUZikPwHPrzeQFBofHMvbJ3Z58d7SJBaOC7gcTrkIVejM3zRjq9JsQwVu\nG0NlEI462wKBgQDLu9Eq4LeJCCJ4rr1ZDsIT57KOfaWw4eVTOyTOPfY2ylJqqReJ\nfkOVTw01CBtPPwzHCbOYfeWCTYlEDeIiYpvSkKp+wNyq+IKZ1pdz5Vgl5/5iuOzb\nxHgyT7UMNM4pcCvvuxcFtJ4kORmdmq4aSaOuGzhzZGe9Dt/K7wF3xg/cEQKBgAin\nyF5X2lMziEEm7uGJDgfr7aER2Lz0JBlbiOUPlO6owMF+3NSGUXZuQZe3m1cJaTSN\n0MbQoULIpez1JYHRR1pEQDMOJWTbyniScEQZm9WPjLVn+KbmljOwE/TukOaOgjC/\nCG6hHTrLoD/18zJC27XNHkiWRWSGJ8prA7+a3SwdAoGBAMycUb7G7b77OVklxiDD\niuSIncgHCA/s6njsFYi8FHYVV9No0nkYaBEcKucY4/DG2C8DYSJhAOEc/pqHeXBj\nC/NXeMogjLINqYEkb6EZb5XiBshvUkCRt5F7tPtCB3vbPg4XMte02Q4+TzK71b0Y\nJhFF38L3IKfrSd8BHuTIx0hG\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@gerador-de-documentos-pei.iam.gserviceaccount.com",
+  "client_id": "108880766335552663495",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40gerador-de-documentos-pei.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
