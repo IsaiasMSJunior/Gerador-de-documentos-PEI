@@ -15,7 +15,7 @@ if not os.path.exists(KEY_PATH):
 cred = credentials.Certificate(KEY_PATH)
 firebase_admin.initialize_app(cred, {
     # Substitua pela URL do seu Realtime Database (sem barra final)
-    "databaseURL": "https://SEU_PROJETO.firebaseio.com"
+    "databaseURL": "https://gerador-de-documentos-pei-default-rtdb.firebaseio.com"
 })
 
 st.title("📥 Cadastro de Nome")
