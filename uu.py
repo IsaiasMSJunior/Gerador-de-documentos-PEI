@@ -11,6 +11,31 @@ from datetime import datetime
 from io import BytesIO
 from openpyxl import load_workbook
 from openpyxl.styles import PatternFill
+import mysql.connector
+
+# Configurações de conexão
+host = "localhost"  # Endereço do servidor MySQL
+user = "gerador1_ARQUIVOS"  # Nome de usuário
+password = "mudar123"  # Senha
+database = "teste"  # Nome do banco de dados
+
+# Cria a conexão
+try:
+    conn = mysql.connector.connect(host=host, user=user, password=password, database=database)
+
+    if conn.is_connected():
+        print("Conexão bem-sucedida!")
+        # Código para interagir com o banco de dados
+    else:
+        print("Erro ao conectar ao banco de dados.")
+
+except mysql.connector.Error as err:
+    print(f"Erro: {err}")
+
+finally:
+    if conn.is_connected():
+        conn.close()
+        print("Conexão fechada.")
 
 st.set_page_config(page_title="Agenda Escolar", layout="wide")
 
