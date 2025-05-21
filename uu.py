@@ -13,6 +13,8 @@ from openpyxl import load_workbook
 from openpyxl.styles import PatternFill
 import mysql.connector
 
+conn = none
+
 # Configurações de conexão
 host = "localhost"  # Endereço do servidor MySQL
 user = "gerador1_ARQUIVOS"  # Nome de usuário
